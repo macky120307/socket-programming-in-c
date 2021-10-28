@@ -67,15 +67,23 @@ int main(void)
     recv(soc,receiver_name,BUF_LEN,0);
     printf("%s さんから応答がありました\n",receiver_name);
 
+    fcntl(0, F_SETFL, O_NONBLOCK);
+    fcntl(soc, F_SETFL, O_NONBLOCK);
+
     /* 無限ループ開始 */
     while (1) {
         printf("%s: ", caller_name);
-        fgets(caller_msg, BUF_LEN, stdin);
-        caller_msg[strlen(caller_msg)-1] = '\0';
-        send(soc, caller_msg, strlen(caller_msg)+1, 0);
+        char *fgetsRes = fgets(caller_msg, BUF_LEN, stdin);
+        if (fgetsRes) {
+            caller_msg[strlen(caller_msg)-1] = '\0';
+            send(soc, caller_msg, strlen(caller_msg)+1, 0);
+        }
         if (!strcmp(caller_msg, "end") || !strcmp(caller_msg, "quit")) break;
-        recv(soc, receiver_msg, BUF_LEN,0);
-        printf("%s: %s \n", receiver_name, receiver_msg);
+
+        int recvRes = recv(soc, receiver_msg, BUF_LEN,0);
+        if (recvRes > 0) {
+            printf("%s: %s \n", receiver_name, receiver_msg);
+        }
         if (!strcmp(receiver_msg, "end") || !strcmp(receiver_msg, "quit")) break;
     }
     /* 無限ループ終了 */
