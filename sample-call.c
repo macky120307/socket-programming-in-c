@@ -25,6 +25,8 @@ int  flag;
 /**************************************
 プログラムで新たに使う変数をここで定義する
 **************************************/
+char receiver_message[BUF_LEN+1];
+char caller_message[BUF_LEN+1];
 
 
 int main(void)
@@ -54,9 +56,9 @@ int main(void)
     /* ソケット soc を使って変数 server に示した相手と接続 */
     flag = connect(soc, (struct sockaddr *)&server, sizeof(server));
     if(flag < 0){   /* 接続失敗 */
-	    perror("connect");
-	    exit(1);
-	}
+        perror("connect");
+        exit(1);
+    }
 
     /* 相手に自分の名前を送信 */
     send(soc,caller_name,strlen(caller_name)+1,0);
@@ -66,8 +68,14 @@ int main(void)
     printf("%s さんから応答がありました\n",receiver_name);
 
     /* 無限ループ開始 */
-    
-
+    while (true) {
+        printf("%s: ", caller_name);
+        fgets(caller_message, BUF_LEN, stdin);
+        caller_message[strlen(caller_message)-1] = '\0';
+        send(soc, caller_message, strlen(caller_message)+1, 0);
+        recv(soc, caller_message, BUF_LEN,0);
+        printf("%s: %s \n", receiver_name, receiver_message);
+    }
     /* 無限ループ終了 */
 
     close(soc);
