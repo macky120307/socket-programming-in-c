@@ -70,6 +70,7 @@ int main(void)
     fcntl(0, F_SETFL, O_NONBLOCK);
     fcntl(soc, F_SETFL, O_NONBLOCK);
 
+    printf("Type 'start' to start chat");
     /* 無限ループ開始 */
     while (1) {
         char *fgetsRes = fgets(caller_msg, BUF_LEN, stdin);
@@ -77,16 +78,19 @@ int main(void)
             printf("%s: ", caller_name);
             caller_msg[strlen(caller_msg)-1] = '\0';
             send(soc, caller_msg, strlen(caller_msg)+1, 0);
+
+            if (!strcmp(caller_msg, "end") || !strcmp(caller_msg, "quit")) break;
         }
-        if (!strcmp(caller_msg, "end") || !strcmp(caller_msg, "quit")) break;
 
         int recvRes = recv(soc, receiver_msg, BUF_LEN,0);
         if (recvRes > 0) {
-            printf("%s: %s \n", receiver_name, receiver_msg);
+            printf("\n")
+            printf("%s: %s", receiver_name, receiver_msg);
         }
         if (!strcmp(receiver_msg, "end") || !strcmp(receiver_msg, "quit")) break;
     }
     /* 無限ループ終了 */
+    printf("\n")
 
     close(soc);
     return 0;
