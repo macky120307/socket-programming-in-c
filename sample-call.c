@@ -25,8 +25,8 @@ int  flag;
 /**************************************
 プログラムで新たに使う変数をここで定義する
 **************************************/
-char receiver_message[BUF_LEN+1];
-char caller_message[BUF_LEN+1];
+char receiver_msg[BUF_LEN+1];
+char caller_msg[BUF_LEN+1];
 
 
 int main(void)
@@ -70,11 +70,11 @@ int main(void)
     /* 無限ループ開始 */
     while (1) {
         printf("%s: ", caller_name);
-        fgets(caller_message, BUF_LEN, stdin);
-        caller_message[strlen(caller_message)-1] = '\0';
-        send(soc, caller_message, strlen(caller_message)+1, 0);
-        recv(soc, receiver_message, BUF_LEN,0);
-        printf("%s: %s \n", receiver_name, receiver_message);
+        fgets(caller_msg, BUF_LEN, stdin);
+        caller_msg[strlen(caller_msg)-1] = '\0';
+        send(soc, caller_msg, strlen(caller_msg)+1, 0);
+        recv(soc, receiver_msg, BUF_LEN,0);
+        printf("%s: %s \n", receiver_name, receiver_msg);
     }
     /* 無限ループ終了 */
 
