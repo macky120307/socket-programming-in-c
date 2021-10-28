@@ -84,7 +84,7 @@ int main(void)
 
         int recvRes = recv(soc, receiver_msg, BUF_LEN,0);
         if (recvRes > 0) {
-            printf("\r")
+            printf("\r");
             printf("%s: %s \n", receiver_name, receiver_msg);
         }
         if (!strcmp(receiver_msg, "end") || !strcmp(receiver_msg, "quit")) break;
