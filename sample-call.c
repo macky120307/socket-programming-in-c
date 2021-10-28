@@ -84,13 +84,12 @@ int main(void)
 
         int recvRes = recv(soc, receiver_msg, BUF_LEN,0);
         if (recvRes > 0) {
-            printf("\n")
-            printf("%s: %s", receiver_name, receiver_msg);
+            printf("\r")
+            printf("%s: %s \n", receiver_name, receiver_msg);
         }
         if (!strcmp(receiver_msg, "end") || !strcmp(receiver_msg, "quit")) break;
     }
     /* 無限ループ終了 */
-    printf("\n")
 
     close(soc);
     return 0;
