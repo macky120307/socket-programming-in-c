@@ -72,9 +72,9 @@ int main(void)
 
     /* 無限ループ開始 */
     while (1) {
-        printf("%s: ", caller_name);
         char *fgetsRes = fgets(caller_msg, BUF_LEN, stdin);
         if (fgetsRes) {
+            printf("%s: ", caller_name);
             caller_msg[strlen(caller_msg)-1] = '\0';
             send(soc, caller_msg, strlen(caller_msg)+1, 0);
         }
