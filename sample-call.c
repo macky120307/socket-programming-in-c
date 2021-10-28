@@ -72,10 +72,10 @@ int main(void)
         printf("%s: ", caller_name);
         fgets(caller_msg, BUF_LEN, stdin);
         caller_msg[strlen(caller_msg)-1] = '\0';
-        if (caller_msg == "end" || caller_msg == "quit") break;
+        if (strcmp(caller_msg, "end") == 0 || strcmp(caller_msg, "quit") == 0) break;
         send(soc, caller_msg, strlen(caller_msg)+1, 0);
         recv(soc, receiver_msg, BUF_LEN,0);
-        if (receiver_msg == "end" || receiver_msg == "quit") break;
+        if (strcmp(receiver_msg, "end") == 0 || strcmp(receiver_msg, "quit") == 0) break;
         printf("%s: %s \n", receiver_name, receiver_msg);
     }
     /* 無限ループ終了 */
