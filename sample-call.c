@@ -68,12 +68,12 @@ int main(void)
     printf("%s さんから応答がありました\n",receiver_name);
 
     /* 無限ループ開始 */
-    while (true) {
+    while (1) {
         printf("%s: ", caller_name);
         fgets(caller_message, BUF_LEN, stdin);
         caller_message[strlen(caller_message)-1] = '\0';
         send(soc, caller_message, strlen(caller_message)+1, 0);
-        recv(soc, caller_message, BUF_LEN,0);
+        recv(soc, receiver_message, BUF_LEN,0);
         printf("%s: %s \n", receiver_name, receiver_message);
     }
     /* 無限ループ終了 */
