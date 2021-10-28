@@ -25,6 +25,8 @@ int flag;
 /****************************************
 プログラムで新たに使う変数をこの下で定義する
 ****************************************/
+char receiver_msg[BUF_LEN+1];
+char caller_msg[BUF_LEN+1];
 
 
 int main()
@@ -80,7 +82,14 @@ int main()
     send(soc, receiver_name, strlen(receiver_name)+1, 0);
 
     /*      無限ループ開始　      */
-    
+    while (1) {
+        recv(soc, caller_msg, BUF_LEN,0);
+        printf("%s: %s \n", caller_name, caller_msg);
+        printf("%s: ", receiver_name);
+        fgets(receiver_msg, BUF_LEN, stdin);
+        receiver_msg[strlen(receiver_msg)-1] = '\0';
+        send(soc, receiver_msg, strlen(receiver_msg)+1, 0);
+    }
     /*      無限ループ終了        */
     /* 着信を待つために生成したソケット soc_waiting を閉じる */
     close(soc);
