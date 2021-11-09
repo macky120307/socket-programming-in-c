@@ -78,17 +78,15 @@ int main(void)
             printf("%s: ", caller_name);
             caller_msg[strlen(caller_msg)-1] = '\0';
             send(soc, caller_msg, strlen(caller_msg)+1, 0);
-
             if (!strcmp(caller_msg, "end") || !strcmp(caller_msg, "quit")) break;
         }
 
         int recvRes = recv(soc, receiver_msg, BUF_LEN,0);
         if (recvRes > 0) {
-            printf("%s: ", caller_name);
             printf("\r");
             printf("%s: %s \n", receiver_name, receiver_msg);
+            if (!strcmp(receiver_msg, "end") || !strcmp(receiver_msg, "quit")) break;
         }
-        if (!strcmp(receiver_msg, "end") || !strcmp(receiver_msg, "quit")) break;
     }
     /* 無限ループ終了 */
 
