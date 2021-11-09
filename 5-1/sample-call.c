@@ -75,14 +75,19 @@ int main(void)
     while (1) {
         /* 自端末のユーザの名前を表示 */
         printf("%s: ", caller_name);
+
         /* fgets関数でメッセージを取得する */
         fgets(caller_msg, BUF_LEN, stdin);
+
         /* fgets関数で取得したメッセージの最後の文字をnull文字にする */
         caller_msg[strlen(caller_msg)-1] = '\0';
+
         /* send関数を用いてcaller_msgを送信する */
         send(soc, caller_msg, strlen(caller_msg)+1, 0);
-        /* recv関数を用いてreceiver_msgを受信する */
+
+        /* recv関数を用いてメッセージを受信する */
         recv(soc, receiver_msg, BUF_LEN,0);
+
         /* 接続相手のユーザの名前と受信したメッセージを表示する */
         printf("%s: %s \n", receiver_name, receiver_msg);
     }
