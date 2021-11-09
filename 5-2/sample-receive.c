@@ -83,11 +83,22 @@ int main()
 
     /*      無限ループ開始　      */
     while (1) {
+        /* recv関数を用いてメッセージを受信する */
         recv(soc, caller_msg, BUF_LEN,0);
+
+        /* 接続相手のユーザの名前と受信したメッセージを表示する */
         printf("%s: %s \n", caller_name, caller_msg);
+
+        /* 自端末のユーザの名前を表示 */
         printf("%s: ", receiver_name);
+
+        /* fgets関数でメッセージを取得する */
         fgets(receiver_msg, BUF_LEN, stdin);
+
+         /* fgets関数で取得したメッセージの最後の文字をnull文字にする */
         receiver_msg[strlen(receiver_msg)-1] = '\0';
+
+        /* send関数を用いてreceiver_msgを送信する */
         send(soc, receiver_msg, strlen(receiver_msg)+1, 0);
     }
     /*      無限ループ終了        */

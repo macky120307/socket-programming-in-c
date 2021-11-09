@@ -25,8 +25,8 @@ int  flag;
 /**************************************
 プログラムで新たに使う変数をここで定義する
 **************************************/
-char receiver_msg[BUF_LEN+1];
 char caller_msg[BUF_LEN+1];
+char receiver_msg[BUF_LEN+1];
 
 
 int main(void)
@@ -73,20 +73,29 @@ int main(void)
     printf("Type 'start' to start chat\n");
     /* 無限ループ開始 */
     while (1) {
-        char *fgetsRes = fgets(caller_msg, BUF_LEN, stdin);
-        if (fgetsRes) {
-            printf("%s: ", caller_name);
-            caller_msg[strlen(caller_msg)-1] = '\0';
-            send(soc, caller_msg, strlen(caller_msg)+1, 0);
-            if (!strcmp(caller_msg, "end") || !strcmp(caller_msg, "quit")) break;
-        }
+        /* 自端末のユーザの名前を表示 */
+        printf("%s: ", caller_name);
 
-        int recvRes = recv(soc, receiver_msg, BUF_LEN,0);
-        if (recvRes > 0) {
-            printf("\r");
-            printf("%s: %s \n", receiver_name, receiver_msg);
-            if (!strcmp(receiver_msg, "end") || !strcmp(receiver_msg, "quit")) break;
-        }
+        /* fgets関数でメッセージを取得する */
+        fgets(caller_msg, BUF_LEN, stdin);
+
+        /* fgets関数で取得したメッセージの最後の文字をnull文字にする */
+        caller_msg[strlen(caller_msg)-1] = '\0';
+
+        /* send関数を用いてcaller_msgを送信する */
+        send(soc, caller_msg, strlen(caller_msg)+1, 0);
+
+        /* caller_msgが'end'または'quit'だった場合、無限ループを抜ける */
+        if (!strcmp(caller_msg, "end") || !strcmp(caller_msg, "quit")) break;
+
+        /* recv関数を用いてメッセージを受信する */
+        recv(soc, receiver_msg, BUF_LEN,0);
+
+        /* 接続相手のユーザの名前と受信したメッセージを表示する */
+        printf("%s: %s \n", receiver_name, receiver_msg);
+
+        /* receiver_msgが'end'または'quit'だった場合、無限ループを抜ける */
+        if (!strcmp(receiver_msg, "end") || !strcmp(receiver_msg, "quit")) break;
     }
     /* 無限ループ終了 */
 
